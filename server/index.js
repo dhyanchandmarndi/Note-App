@@ -1,13 +1,10 @@
 require("dotenv").config();
 
-const config = require("./config.json");
 const mongoose = require("mongoose");
-
-const PORT = process.env.PORT || 8000;
 
 async function startServer() {
   try {
-    await mongoose.connect(config.connectionString);
+    await mongoose.connect(process.env.URI);
     console.log("Connected to MongoDB");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
@@ -327,8 +324,8 @@ app.get("/search-note/", authenticateToken, async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server running on port ${process.env.PORT}`);
 });
 
 module.exports = app;
