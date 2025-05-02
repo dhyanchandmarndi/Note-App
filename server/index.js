@@ -30,10 +30,6 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.json({ data: "Hello" });
-});
-
 app.use(express.json());
 
 // Create Account

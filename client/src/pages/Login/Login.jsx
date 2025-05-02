@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import Passwordinput from "../../components/Input/Passwordinput.jsx";
@@ -11,6 +11,41 @@ const Login = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+
+  // login test
+  useEffect(() => {
+    const login = async () => {
+      try {
+        const res = await fetch(
+          "https://keep-notes-app-0yb0.onrender.com/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+              password: password,
+            }),
+          }
+        );
+
+        const data = await res.json();
+
+        if (data.accessToken) {
+          localStorage.setItem("token", data.accessToken);
+          navigate("/dashboard");
+        } else {
+          setError(data.message || "Login failed");
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Something went wrong");
+      }
+    };
+
+    login();
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
